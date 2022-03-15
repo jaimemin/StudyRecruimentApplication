@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author jaime
@@ -24,6 +25,12 @@ public class AccountService {
 
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * @Transactional 붙이지 않으면 persist 상태 유지 안됨 (detached)
+     *
+     * @param signUpForm
+     */
+    @Transactional
     public void processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken();
