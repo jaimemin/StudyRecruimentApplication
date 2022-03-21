@@ -4,9 +4,15 @@ import com.tistory.jaimemin.studyrecruitment.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author jaime
@@ -31,10 +37,12 @@ public class AccountService {
      * @param signUpForm
      */
     @Transactional
-    public void processNewAccount(SignUpForm signUpForm) {
+    public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken();
         sendSignUpConfirmEmail(newAccount);
+
+        return newAccount;
     }
 
     private Account saveNewAccount(SignUpForm signUpForm) {
@@ -60,5 +68,16 @@ public class AccountService {
                 + "&email="
                 + newAccount.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void login(Account account) {
+        /**
+         * 정석대로라면 AuthenticationManager를 통해서 인증을 해야함
+         */
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(account.getNickname()
+                , account.getPassword()
+                , List.of(new SimpleGrantedAuthority("ROLE USER")));
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(token);
     }
 }
