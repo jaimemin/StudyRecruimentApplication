@@ -74,10 +74,10 @@ public class AccountService {
         /**
          * 정석대로라면 AuthenticationManager를 통해서 인증을 해야함
          */
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(account.getNickname()
-                , account.getPassword()
-                , List.of(new SimpleGrantedAuthority("ROLE USER")));
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(token);
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                new UserAccount(account),
+                account.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }
