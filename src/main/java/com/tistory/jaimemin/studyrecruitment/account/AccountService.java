@@ -59,7 +59,7 @@ public class AccountService {
         return newAccount;
     }
 
-    private void sendSignUpConfirmEmail(Account newAccount) {
+    public void sendSignUpConfirmEmail(Account newAccount) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(newAccount.getEmail());
         mailMessage.setSubject("Study-Recruitment, 회원 가입 인증");
@@ -75,9 +75,10 @@ public class AccountService {
          * 정석대로라면 AuthenticationManager를 통해서 인증을 해야함
          */
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                new UserAccount(account),
-                account.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContextHolder.getContext().setAuthentication(token);
+                new UserAccount(account)
+                , account.getPassword()
+                , List.of(new SimpleGrantedAuthority("ROLE USER")));
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(token);
     }
 }
