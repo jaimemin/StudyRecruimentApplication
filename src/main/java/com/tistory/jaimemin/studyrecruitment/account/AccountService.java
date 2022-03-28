@@ -25,6 +25,7 @@ import java.util.List;
  * @since 2022-03-16
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
@@ -39,7 +40,6 @@ public class AccountService implements UserDetailsService {
      *
      * @param signUpForm
      */
-    @Transactional
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken();
@@ -85,6 +85,14 @@ public class AccountService implements UserDetailsService {
         context.setAuthentication(token);
     }
 
+    /**
+     * 읽을 떄 데이터 변경이 없으므로 성능을 위해 readOnly = true
+     *
+     * @param emailOrNickname
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -98,5 +106,15 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+    /**
+     * Transactional이 걸린 Service 계층에서 데이터 변경이 이루어져야 영속성 Context에서 변경이 이루어짐
+     * 
+     * @param account
+     */
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
     }
 }
