@@ -7,3 +7,5 @@
 @AuthenticaionPrincipal 내용 정리: https://jaimemin.tistory.com/2078
 
 Remember-me 내용 정리: https://jaimemin.tistory.com/2079
+
+OSIV 내용 정리: https://jaimemin.tistory.com/2080
