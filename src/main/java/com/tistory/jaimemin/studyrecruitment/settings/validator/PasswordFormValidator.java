@@ -1,5 +1,6 @@
-package com.tistory.jaimemin.studyrecruitment.settings;
+package com.tistory.jaimemin.studyrecruitment.settings.validator;
 
+import com.tistory.jaimemin.studyrecruitment.settings.form.PasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

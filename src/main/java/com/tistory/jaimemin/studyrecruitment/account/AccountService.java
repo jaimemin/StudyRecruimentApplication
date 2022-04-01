@@ -1,8 +1,9 @@
 package com.tistory.jaimemin.studyrecruitment.account;
 
+import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
-import com.tistory.jaimemin.studyrecruitment.settings.Notifications;
-import com.tistory.jaimemin.studyrecruitment.settings.Profile;
+import com.tistory.jaimemin.studyrecruitment.settings.form.Notifications;
+import com.tistory.jaimemin.studyrecruitment.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -148,5 +149,15 @@ public class AccountService implements UserDetailsService {
          * account가 준영속상태이므로 명시적으로 save
          */
         accountRepository.save(account);
+    }
+
+    public void updateNickname(Account account, String nickname) {
+        account.setNickname(nickname);
+
+        /**
+         * account가 준영속상태이므로 명시적으로 save
+         */
+        accountRepository.save(account);
+        login(account);
     }
 }

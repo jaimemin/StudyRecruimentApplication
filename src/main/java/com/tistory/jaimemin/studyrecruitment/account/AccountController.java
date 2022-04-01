@@ -1,16 +1,16 @@
 package com.tistory.jaimemin.studyrecruitment.account;
 
+import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
+import com.tistory.jaimemin.studyrecruitment.account.validator.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.util.ObjectUtils;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 /**
  * @author jaime

@@ -1,5 +1,7 @@
-package com.tistory.jaimemin.studyrecruitment.account;
+package com.tistory.jaimemin.studyrecruitment.account.validator;
 
+import com.tistory.jaimemin.studyrecruitment.account.AccountRepository;
+import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

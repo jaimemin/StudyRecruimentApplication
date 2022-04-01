@@ -1,13 +1,8 @@
-/******************************************************************************************
- * 본 프로그램소스는 하나은행의 사전승인 없이 임의복제, 복사, 배포할 수 없음
- *
- * Copyright (C) 2018 by co.,Ltd. All right reserved.
- ******************************************************************************************/
 package com.tistory.jaimemin.studyrecruitment.main;
 
 import com.tistory.jaimemin.studyrecruitment.account.AccountRepository;
 import com.tistory.jaimemin.studyrecruitment.account.AccountService;
-import com.tistory.jaimemin.studyrecruitment.account.SignUpForm;
+import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

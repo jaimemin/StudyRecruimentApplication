@@ -1,4 +1,4 @@
-package com.tistory.jaimemin.studyrecruitment.settings;
+package com.tistory.jaimemin.studyrecruitment.settings.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
