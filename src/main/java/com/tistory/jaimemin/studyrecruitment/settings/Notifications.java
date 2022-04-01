@@ -1,8 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.settings;
 
-import com.tistory.jaimemin.studyrecruitment.domain.Account;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author jaime
@@ -12,7 +10,6 @@ import lombok.NoArgsConstructor;
  * @since 2022-04-02
  */
 @Data
-@NoArgsConstructor
 public class Notifications {
 
     private boolean studyCreatedByEmail;
@@ -27,12 +24,4 @@ public class Notifications {
 
     private boolean studyUpdatedByWeb;
 
-    public Notifications(Account account) {
-        this.studyCreatedByEmail = account.isStudyCreatedByEmail();
-        this.studyCreatedByWeb = account.isStudyCreatedByWeb();
-        this.studyEnrollmentResultByEmail = account.isStudyEnrollmentResultByEmail();
-        this.studyEnrollmentResultByWeb = account.isStudyUpdatedByWeb();
-        this.studyUpdatedByEmail = account.isStudyUpdatedByEmail();
-        this.studyUpdatedByWeb = account.isStudyUpdatedByWeb();
-    }
 }
