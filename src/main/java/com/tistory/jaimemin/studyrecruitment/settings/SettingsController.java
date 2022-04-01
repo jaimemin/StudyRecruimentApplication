@@ -28,9 +28,9 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class SettingsController {
 
-    private static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
+    static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
 
-    private static final String SETTINGS_PROFILE_URL = "settings/profile";
+    static final String SETTINGS_PROFILE_URL = "/settings/profile";
 
     private final AccountService accountService;
 
@@ -70,6 +70,6 @@ public class SettingsController {
         accountService.updateProfile(account, profile);
         redirectAttributes.addFlashAttribute("message", "프로필을 수정했습니다.");
 
-        return "redirect:/" + SETTINGS_PROFILE_URL;
+        return "redirect:" + SETTINGS_PROFILE_URL;
     }
 }
