@@ -124,8 +124,7 @@ public class AccountService implements UserDetailsService {
         account.setOccupation(profile.getOccupation());
         account.setLocation(profile.getLocation());
         account.setBio(profile.getBio());
-
-        // TODO: 프로필 이미지 변경 추가
+        account.setProfileImage(profile.getProfileImage());
         
         /**
          * account가 준영속상태이므로 명시적으로 save
