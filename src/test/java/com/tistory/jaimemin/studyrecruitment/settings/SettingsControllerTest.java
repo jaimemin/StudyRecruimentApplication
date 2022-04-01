@@ -216,7 +216,7 @@ class SettingsControllerTest {
     @Test
     void updateAccount_failure() throws Exception {
         String newNickname = "¯\\_(ツ)_/¯";
-        
+
         mockMvc.perform(post(SettingsController.SETTINGS_ACCOUNT_URL)
                         .param("nickname", newNickname)
                         .with(csrf()))
