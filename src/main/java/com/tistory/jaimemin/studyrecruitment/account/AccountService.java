@@ -131,4 +131,13 @@ public class AccountService implements UserDetailsService {
          */
         accountRepository.save(account);
     }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+
+        /**
+         * account가 준영속상태이므로 명시적으로 save
+         */
+        accountRepository.save(account);
+    }
 }

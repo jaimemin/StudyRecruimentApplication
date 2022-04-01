@@ -1,6 +1,7 @@
 package com.tistory.jaimemin.studyrecruitment.config;
 
 import com.tistory.jaimemin.studyrecruitment.account.AccountService;
+import com.tistory.jaimemin.studyrecruitment.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginPage("/login")
+                .successHandler(new LoginSuccessHandler())
                 .permitAll();
 
         http.logout()
