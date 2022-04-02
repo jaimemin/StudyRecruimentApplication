@@ -2,6 +2,7 @@ package com.tistory.jaimemin.studyrecruitment.account;
 
 import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
+import com.tistory.jaimemin.studyrecruitment.domain.Tag;
 import com.tistory.jaimemin.studyrecruitment.settings.form.Notifications;
 import com.tistory.jaimemin.studyrecruitment.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author jaime
@@ -173,5 +175,15 @@ public class AccountService implements UserDetailsService {
                 + account.getEmail());
 
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        /**
+         * 영속 상태로 만들기 위해
+         * accountRepository.getOne()은 lazy loading
+         * 현 상황에서는 findById와 getOne() 둘 다 같은 동작
+         */
+        Optional<Account> currentAccount = accountRepository.findById(account.getId());
+        currentAccount.ifPresent(a -> a.getTags().add(tag));
     }
 }

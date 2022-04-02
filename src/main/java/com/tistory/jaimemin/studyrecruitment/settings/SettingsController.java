@@ -3,26 +3,24 @@ package com.tistory.jaimemin.studyrecruitment.settings;
 import com.tistory.jaimemin.studyrecruitment.account.AccountService;
 import com.tistory.jaimemin.studyrecruitment.account.CurrentUser;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
-import com.tistory.jaimemin.studyrecruitment.settings.form.NicknameForm;
-import com.tistory.jaimemin.studyrecruitment.settings.form.Notifications;
-import com.tistory.jaimemin.studyrecruitment.settings.form.PasswordForm;
-import com.tistory.jaimemin.studyrecruitment.settings.form.Profile;
+import com.tistory.jaimemin.studyrecruitment.domain.Tag;
+import com.tistory.jaimemin.studyrecruitment.settings.form.*;
 import com.tistory.jaimemin.studyrecruitment.settings.validator.NicknameValidator;
 import com.tistory.jaimemin.studyrecruitment.settings.validator.PasswordFormValidator;
+import com.tistory.jaimemin.studyrecruitment.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * @author jaime
@@ -56,6 +54,8 @@ public class SettingsController {
     static final String SETTINGS_TAGS_VIEW_NAME = "settings/tags";
 
     static final String SETTINGS_TAGS_URL = "/settings/tags";
+
+    private final TagRepository tagRepository;
 
     private final AccountService accountService;
 
@@ -196,5 +196,22 @@ public class SettingsController {
         model.addAttribute(account);
 
         return SETTINGS_TAGS_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_TAGS_URL + "/add")
+    @ResponseBody
+    public ResponseEntity addTags(@CurrentUser Account account
+            , Model model
+            , @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title).orElseGet(() ->
+            tagRepository.save(Tag.builder()
+                    .title(tagForm.getTagTitle())
+                    .build())
+        );
+
+        accountService.addTag(account, tag);
+
+        return ResponseEntity.ok().build();
     }
 }
