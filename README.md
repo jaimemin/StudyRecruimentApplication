@@ -11,3 +11,5 @@ Remember-me 내용 정리: https://jaimemin.tistory.com/2079
 OSIV 내용 정리: https://jaimemin.tistory.com/2080
 
 로그인된 사용자가 접근할 수 있는 기능 Test: https://jaimemin.tistory.com/2081
+
+BcryptPasswordEncoder: https://jaimemin.tistory.com/2082
