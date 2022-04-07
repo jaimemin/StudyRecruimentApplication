@@ -6,9 +6,13 @@ import com.tistory.jaimemin.studyrecruitment.account.AccountRepository;
 import com.tistory.jaimemin.studyrecruitment.account.AccountService;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
 import com.tistory.jaimemin.studyrecruitment.domain.Tag;
+import com.tistory.jaimemin.studyrecruitment.domain.Zone;
 import com.tistory.jaimemin.studyrecruitment.settings.form.TagForm;
+import com.tistory.jaimemin.studyrecruitment.settings.form.ZoneForm;
 import com.tistory.jaimemin.studyrecruitment.tag.TagRepository;
+import com.tistory.jaimemin.studyrecruitment.zone.ZoneRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -50,6 +52,26 @@ class SettingsControllerTest {
     @Autowired
     TagRepository tagRepository;
 
+    @Autowired
+    ZoneRepository zoneRepository;
+
+    private Zone testZone = Zone.builder()
+            .city("test")
+            .localNameOfCity("테스트시")
+            .province("테스트주")
+            .build();
+
+    @BeforeEach
+    void beforeEach() {
+        zoneRepository.save(testZone);
+    }
+
+    @AfterEach
+    void afterEach() {
+        accountRepository.deleteAll();
+        zoneRepository.deleteAll();
+    }
+
 //    @BeforeEach
 //    void beforeEach() {
 //        SignUpForm signUpForm = new SignUpForm();
@@ -58,11 +80,6 @@ class SettingsControllerTest {
 //        signUpForm.setPassword("12341234");
 //        accountService.processNewAccount(signUpForm);
 //    }
-
-    @AfterEach
-    void afterEach() {
-        accountRepository.deleteAll();
-    }
 
     @WithAccount("jaimemin")
     @DisplayName("프로필 수정 폼")
@@ -295,5 +312,55 @@ class SettingsControllerTest {
                 .andExpect(status().isOk());
 
         assertFalse(jaimemin.getTags().contains(newTag));
+    }
+
+    @WithAccount("jaimemin")
+    @DisplayName("계정의 지역 수정 폼")
+    @Test
+    void updateZonesForm() throws Exception {
+        mockMvc.perform(get(SettingsController.SETTINGS_ZONES_URL))
+                .andExpect(view().name(SettingsController.SETTINGS_ZONES_VIEW_NAME))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("whitelist"))
+                .andExpect(model().attributeExists("zones"));
+    }
+
+    @WithAccount("jaimemin")
+    @DisplayName("계정에 지역 정보 추가")
+    @Test
+    void addZone() throws Exception {
+        ZoneForm zoneForm = new ZoneForm();
+        zoneForm.setZoneName(testZone.toString());
+
+        mockMvc.perform(post(SettingsController.SETTINGS_ZONES_URL + "/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(zoneForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        Account jaimemin = accountRepository.findByNickname("jaimemin");
+        Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(), testZone.getProvince());
+
+        assertTrue(jaimemin.getZones().contains(zone));
+    }
+
+    @WithAccount("jaimemin")
+    @DisplayName("계정의 지역 정보 삭제")
+    @Test
+    void removeZone() throws Exception {
+        Account jaimemin = accountRepository.findByNickname("jaimemin");
+        Zone zone = zoneRepository.findByCityAndProvince(testZone.getCity(), testZone.getProvince());
+        accountService.addZone(jaimemin, zone);
+
+        ZoneForm zoneForm = new ZoneForm();
+        zoneForm.setZoneName(testZone.toString());
+
+        mockMvc.perform(post(SettingsController.SETTINGS_ZONES_URL + "/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(zoneForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        assertFalse(jaimemin.getTags().contains(zone));
     }
 }

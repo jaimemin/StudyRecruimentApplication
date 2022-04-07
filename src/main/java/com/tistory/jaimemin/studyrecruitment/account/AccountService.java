@@ -3,6 +3,7 @@ package com.tistory.jaimemin.studyrecruitment.account;
 import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
 import com.tistory.jaimemin.studyrecruitment.domain.Tag;
+import com.tistory.jaimemin.studyrecruitment.domain.Zone;
 import com.tistory.jaimemin.studyrecruitment.settings.form.Notifications;
 import com.tistory.jaimemin.studyrecruitment.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -190,5 +191,24 @@ public class AccountService implements UserDetailsService {
     public void removeTag(Account account, Tag tag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().remove(tag));
+    }
+
+    public Set<Zone> getZones(Account account) {
+        return accountRepository.findById(account.getId())
+                .orElseThrow()
+                .getZones();
+    }
+
+    public void addZone(Account account, Zone zone) {
+        accountRepository.findById(account.getId()).ifPresent(a -> {
+            a.getZones().add(zone);
+        });
+    }
+
+
+    public void removeZone(Account account, Zone zone) {
+        accountRepository.findById(account.getId()).ifPresent(a -> {
+            a.getZones().remove(zone);
+        });
     }
 }
