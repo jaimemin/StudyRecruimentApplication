@@ -1,5 +1,7 @@
 package com.tistory.jaimemin.studyrecruitment.settings;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tistory.jaimemin.studyrecruitment.account.AccountService;
 import com.tistory.jaimemin.studyrecruitment.account.CurrentUser;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -64,6 +67,8 @@ public class SettingsController {
     private final ModelMapper modelMapper;
 
     private final NicknameValidator nicknameValidator;
+
+    private final ObjectMapper objectMapper;
 
     @InitBinder("passwordForm")
     public void initBinder(WebDataBinder webDataBinder) {
@@ -194,11 +199,16 @@ public class SettingsController {
     }
 
     @GetMapping(SETTINGS_TAGS_URL)
-    public String updateTags(@CurrentUser Account account, Model model) {
+    public String updateTags(@CurrentUser Account account, Model model) throws JsonProcessingException {
         Set<Tag> tags = accountService.getTags(account);
+        List<String> allTags = tagRepository.findAll().stream()
+                .map(Tag::getTitle)
+                .collect(Collectors.toList());
+
         model.addAttribute("tags", tags.stream()
                 .map(Tag::getTitle)
                 .collect(Collectors.toList()));
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(allTags));
         model.addAttribute(account);
 
         return SETTINGS_TAGS_VIEW_NAME;
