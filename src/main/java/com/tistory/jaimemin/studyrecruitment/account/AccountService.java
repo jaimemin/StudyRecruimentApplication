@@ -4,12 +4,13 @@ import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
 import com.tistory.jaimemin.studyrecruitment.domain.Tag;
 import com.tistory.jaimemin.studyrecruitment.domain.Zone;
+import com.tistory.jaimemin.studyrecruitment.mail.EmailMessage;
+import com.tistory.jaimemin.studyrecruitment.mail.EmailService;
 import com.tistory.jaimemin.studyrecruitment.settings.form.Notifications;
 import com.tistory.jaimemin.studyrecruitment.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -33,13 +34,14 @@ import java.util.Set;
  * @since 2022-03-16
  */
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
-    private final JavaMailSender javaMailSender;
+    private final EmailService emailService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -66,14 +68,16 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendSignUpConfirmEmail(Account newAccount) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(newAccount.getEmail());
-        mailMessage.setSubject("Study-Recruitment, 회원 가입 인증");
-        mailMessage.setText("/check-email-token?token="
-                + newAccount.getEmailCheckToken()
-                + "&email="
-                + newAccount.getEmail());
-        javaMailSender.send(mailMessage);
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(newAccount.getEmail())
+                .subject("Study-Recruitment, 회원 가입 인증")
+                .message("/check-email-token?token="
+                        + newAccount.getEmailCheckToken()
+                        + "&email="
+                        + newAccount.getEmail())
+                .build();
+
+        emailService.send(emailMessage);
     }
 
     public void login(Account account) {
@@ -161,15 +165,16 @@ public class AccountService implements UserDetailsService {
     public void sendLoginLink(Account account) {
         account.generateEmailCheckToken();
 
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(account.getEmail());
-        mailMessage.setSubject("Study-Recruitment, 로그인 링크");
-        mailMessage.setText("/login-by-email?token="
-                + account.getEmailCheckToken()
-                + "&email="
-                + account.getEmail());
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(account.getEmail())
+                .subject("Study-Recruitment, 로그인 링크")
+                .message("/login-by-email?token="
+                        + account.getEmailCheckToken()
+                        + "&email="
+                        + account.getEmail())
+                .build();
 
-        javaMailSender.send(mailMessage);
+        emailService.send(emailMessage);
     }
 
     public void addTag(Account account, Tag tag) {
