@@ -1,6 +1,7 @@
 package com.tistory.jaimemin.studyrecruitment.account;
 
 import com.tistory.jaimemin.studyrecruitment.account.form.SignUpForm;
+import com.tistory.jaimemin.studyrecruitment.config.AppProperties;
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
 import com.tistory.jaimemin.studyrecruitment.domain.Tag;
 import com.tistory.jaimemin.studyrecruitment.domain.Zone;
@@ -21,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +42,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
+    private static final String SIMPLE_LINK_TEMPLATE = "mail/simple-link";
+
     private final AccountRepository accountRepository;
 
     private final EmailService emailService;
@@ -46,6 +51,10 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private final ModelMapper modelMapper;
+
+    private final TemplateEngine templateEngine;
+
+    private final AppProperties appProperties;
 
     /**
      * @Transactional 붙이지 않으면 persist 상태 유지 안됨 (detached)
@@ -68,13 +77,13 @@ public class AccountService implements UserDetailsService {
     }
 
     public void sendSignUpConfirmEmail(Account newAccount) {
+        Context context = getSignUpConfirmContext(newAccount);
+        String message = templateEngine.process(SIMPLE_LINK_TEMPLATE, context);
+
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(newAccount.getEmail())
                 .subject("Study-Recruitment, 회원 가입 인증")
-                .message("/check-email-token?token="
-                        + newAccount.getEmailCheckToken()
-                        + "&email="
-                        + newAccount.getEmail())
+                .message(message)
                 .build();
 
         emailService.send(emailMessage);
@@ -164,6 +173,8 @@ public class AccountService implements UserDetailsService {
 
     public void sendLoginLink(Account account) {
         account.generateEmailCheckToken();
+        Context context = getLoginLinkContext(account);
+        String message = templateEngine.process(SIMPLE_LINK_TEMPLATE, context);
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(account.getEmail())
@@ -215,5 +226,33 @@ public class AccountService implements UserDetailsService {
         accountRepository.findById(account.getId()).ifPresent(a -> {
             a.getZones().remove(zone);
         });
+    }
+
+    private Context getSignUpConfirmContext(Account newAccount) {
+        Context context = new Context();
+        context.setVariable("link", "/check-email-token?token="
+                + newAccount.getEmailCheckToken()
+                + "&email="
+                + newAccount.getEmail());
+        context.setVariable("nickname", newAccount.getNickname());
+        context.setVariable("linkName", "이메일 인증하기");
+        context.setVariable("message", "Study-Recruitment 서비스를 사용하려면 링크를 사용하세요.");
+        context.setVariable("host", appProperties.getHost());
+
+        return context;
+    }
+
+    private Context getLoginLinkContext(Account account) {
+        Context context = new Context();
+        context.setVariable("link", "/login-by-email?token="
+                + account.getEmailCheckToken()
+                + "&email="
+                + account.getEmail());
+        context.setVariable("nickname", account.getNickname());
+        context.setVariable("linkName", "Study-Recruitment 로그인하기");
+        context.setVariable("message", "로그인 하려면 하단 링크를 사용하세요.");
+        context.setVariable("host", appProperties.getHost());
+
+        return context;
     }
 }
