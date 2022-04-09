@@ -179,10 +179,7 @@ public class AccountService implements UserDetailsService {
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(account.getEmail())
                 .subject("Study-Recruitment, 로그인 링크")
-                .message("/login-by-email?token="
-                        + account.getEmailCheckToken()
-                        + "&email="
-                        + account.getEmail())
+                .message(message)
                 .build();
 
         emailService.send(emailMessage);
