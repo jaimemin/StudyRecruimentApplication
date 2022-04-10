@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.domain;
 
+import com.tistory.jaimemin.studyrecruitment.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,6 +15,12 @@ import java.util.Set;
  * </pre>
  * @since 2022-04-10
  */
+@NamedEntityGraph(name = "Study.withAll", attributeNodes = {
+        @NamedAttributeNode("tags"),
+        @NamedAttributeNode("zones"),
+        @NamedAttributeNode("managers"),
+        @NamedAttributeNode("members")
+})
 @Entity
 @Getter
 @Setter
@@ -70,5 +77,22 @@ public class Study {
 
     public void addManager(Account account) {
         this.managers.add(account);
+    }
+
+    public boolean isJoinable(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+
+        return this.isPublished()
+                && this.isRecruiting()
+                && !this.members.contains(account)
+                && !this.managers.contains(account);
+    }
+
+    public boolean isMember(UserAccount userAccount) {
+        return this.members.contains(userAccount.getAccount());
+    }
+
+    public boolean isManager(UserAccount userAccount) {
+        return this.managers.contains(userAccount.getAccount());
     }
 }
