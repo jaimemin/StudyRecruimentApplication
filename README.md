@@ -17,3 +17,5 @@ BcryptPasswordEncoder: https://jaimemin.tistory.com/2082
 PostgreSQL 비밀번호 잊어버렸을 경우: https://jaimemin.tistory.com/2087
 
 구글 SMTP 통해 메일 보내는 방법: https://jaimemin.tistory.com/2088
+
+@NamedEntityGraph: https://jaimemin.tistory.com/2090
