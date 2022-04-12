@@ -74,7 +74,7 @@ public class StudyController {
             , @PathVariable String path
             , Model model) {
         model.addAttribute(account);
-        model.addAttribute(studyRepository.findByPath(path));
+        model.addAttribute(studyService.getStudy(path));
 
         return "study/view";
     }
@@ -84,7 +84,7 @@ public class StudyController {
             , @PathVariable String path
             , Model model) {
         model.addAttribute(account);
-        model.addAttribute(studyRepository.findByPath(path));
+        model.addAttribute(studyService.getStudy(path));
 
         return "study/members";
     }

@@ -225,6 +225,16 @@ public class AccountService implements UserDetailsService {
         });
     }
 
+    public Account getAccount(String nickname) {
+        Account accountByNickname = accountRepository.findByNickname(nickname);
+
+        if (accountByNickname == null) {
+            throw new IllegalArgumentException(nickname + "예 해당하는 사용자가 없습니다.");
+        }
+
+        return accountByNickname;
+    }
+
     private Context getSignUpConfirmContext(Account newAccount) {
         Context context = new Context();
         context.setVariable("link", "/check-email-token?token="

@@ -107,11 +107,7 @@ public class AccountController {
     public String viewProfile(@PathVariable String nickname
             , Model model
             , @CurrentAccount Account account) {
-        Account accountByNickname = accountRepository.findByNickname(nickname);
-
-        if (accountByNickname == null) {
-            throw new IllegalArgumentException(nickname + "예 해당하는 사용자가 없습니다.");
-        }
+        Account accountByNickname = accountService.getAccount(nickname);
 
         // attributeName 지정안하면 타입 클래스 camel case로 지정
         model.addAttribute("account", accountByNickname);

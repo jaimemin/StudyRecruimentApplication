@@ -45,7 +45,9 @@ public class HtmlEmailService implements EmailService {
             javaMailSender.send(mimeMessage);
             log.info("sent email: {}", emailMessage.getMessage());
         } catch (MessagingException e) {
-            log.error("[sendSignUpConfirmEmail] error {}", e.getMessage());
+            log.error("[HtmlEmailService.send()] error {}", e.getMessage());
+
+            throw new RuntimeException(e);
         }
     }
 }
