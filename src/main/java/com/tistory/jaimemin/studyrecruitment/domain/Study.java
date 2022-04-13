@@ -95,4 +95,12 @@ public class Study {
     public boolean isManager(UserAccount userAccount) {
         return this.managers.contains(userAccount.getAccount());
     }
+
+    public String getImage() {
+        return image != null ? image : "/images/default_banner.jpg";
+    }
+
+    public void addMemeber(Account account) {
+        this.members.add(account);
+    }
 }
