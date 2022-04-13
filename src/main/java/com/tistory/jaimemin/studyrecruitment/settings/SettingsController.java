@@ -11,6 +11,7 @@ import com.tistory.jaimemin.studyrecruitment.settings.form.*;
 import com.tistory.jaimemin.studyrecruitment.settings.validator.NicknameValidator;
 import com.tistory.jaimemin.studyrecruitment.settings.validator.PasswordFormValidator;
 import com.tistory.jaimemin.studyrecruitment.tag.TagRepository;
+import com.tistory.jaimemin.studyrecruitment.tag.TagService;
 import com.tistory.jaimemin.studyrecruitment.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +71,8 @@ public class SettingsController {
     private final ZoneRepository zoneRepository;
 
     private final AccountService accountService;
+
+    private final TagService tagService;
 
     private final ModelMapper modelMapper;
 
@@ -226,13 +229,7 @@ public class SettingsController {
     public ResponseEntity addTags(@CurrentAccount Account account
             , Model model
             , @RequestBody TagForm tagForm) {
-        String title = tagForm.getTagTitle();
-        Tag tag = tagRepository.findByTitle(title).orElseGet(() ->
-            tagRepository.save(Tag.builder()
-                    .title(tagForm.getTagTitle())
-                    .build())
-        );
-
+        Tag tag = tagService.findOrCreateNewTag(tagForm.getTagTitle());
         accountService.addTag(account, tag);
 
         return ResponseEntity.ok().build();
