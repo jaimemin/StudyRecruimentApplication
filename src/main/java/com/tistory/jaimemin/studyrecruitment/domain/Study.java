@@ -4,6 +4,8 @@ import com.tistory.jaimemin.studyrecruitment.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,9 +31,11 @@ import java.util.Set;
         @NamedAttributeNode("zones"),
         @NamedAttributeNode("managers")
 })
-
 @NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
         @NamedAttributeNode("managers")
+})
+@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
+        @NamedAttributeNode("members")
 })
 @Entity
 @Getter
@@ -156,5 +160,18 @@ public class Study {
         } else {
             throw new RuntimeException("인원 모집을 멈출 수 없습니다. 스터디를 공개하거나 한 시간 뒤 다시 시도하세요.");
         }
+    }
+
+    public boolean isRemovable() {
+        // TODO: 모일을 했던 스터디 또한 삭제 못하도록 기능 구현
+        return !this.published;
+    }
+
+    public String getEncodedPath() {
+        return URLEncoder.encode(this.path, StandardCharsets.UTF_8);
+    }
+
+    public void removeMember(Account account) {
+        this.members.remove(account);
     }
 }
