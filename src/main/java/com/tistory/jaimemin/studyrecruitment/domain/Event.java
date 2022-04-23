@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.domain;
 
+import com.tistory.jaimemin.studyrecruitment.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
@@ -59,4 +60,41 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
+
+    public boolean isEnrollableFor(UserAccount userAccount) {
+        return isNotClosed() && !isAlreadyEnrolled(userAccount);
+    }
+
+    public boolean isDisenrollableFor(UserAccount userAccount) {
+        return isNotClosed() && isAttended(userAccount);
+    }
+
+    public boolean isNotClosed() {
+        return this.endEnrollmentDateTime.isAfter(LocalDateTime.now());
+    }
+
+    public boolean isAttended(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+
+        for (Enrollment enrollment : this.enrollments) {
+            if (enrollment.getAccount().equals(account)
+                    && enrollment.isAttended()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isAlreadyEnrolled(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+
+        for (Enrollment enrollment : this.enrollments) {
+            if (enrollment.getAccount().equals(account)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
