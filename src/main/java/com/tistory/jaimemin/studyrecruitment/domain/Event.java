@@ -103,10 +103,12 @@ public class Event {
     }
 
     public int numberOfRemainingSpots() {
-        return this.limitOfEnrollments
-                - (int) this.enrollments.stream()
-                    .filter(Enrollment::isAccepted)
-                    .count();
+        return this.limitOfEnrollments - (int) getNumberOfAcceptedEnrollments();
     }
 
+    public long getNumberOfAcceptedEnrollments() {
+        return this.enrollments.stream()
+                .filter(Enrollment::isAccepted)
+                .count();
+    }
 }

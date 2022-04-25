@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.event.validator;
 
+import com.tistory.jaimemin.studyrecruitment.domain.Event;
 import com.tistory.jaimemin.studyrecruitment.event.form.EventForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -56,5 +57,15 @@ public class EventValidator implements Validator {
     private boolean isNotValidEndDateTime(EventForm eventForm) {
         return eventForm.getEndDateTime().isBefore(eventForm.getStartDateTime())
                 || eventForm.getEndDateTime().isBefore(eventForm.getEndEnrollmentDateTime());
+    }
+
+    public void validateUpdateForm(EventForm eventForm
+            , Event event
+            , Errors errors) {
+        if (eventForm.getLimitOfEnrollments() < event.getNumberOfAcceptedEnrollments()) {
+            errors.rejectValue("limitOfEnrollments"
+                    , "wrong.value"
+                    , "확인된 참가 신청보다 모집 인원 수가 커야 합니다.");
+        }
     }
 }
