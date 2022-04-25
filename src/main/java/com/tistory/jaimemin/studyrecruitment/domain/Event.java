@@ -15,6 +15,10 @@ import java.util.List;
  * </pre>
  * @since 2022-04-20
  */
+@NamedEntityGraph(
+        name = "Event.withEnrollments",
+        attributeNodes = @NamedAttributeNode("enrollments")
+)
 @Entity
 @Getter
 @Setter
@@ -97,4 +101,12 @@ public class Event {
 
         return false;
     }
+
+    public int numberOfRemainingSpots() {
+        return this.limitOfEnrollments
+                - (int) this.enrollments.stream()
+                    .filter(Enrollment::isAccepted)
+                    .count();
+    }
+
 }

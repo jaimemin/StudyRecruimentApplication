@@ -1,8 +1,12 @@
 package com.tistory.jaimemin.studyrecruitment.event;
 
 import com.tistory.jaimemin.studyrecruitment.domain.Event;
+import com.tistory.jaimemin.studyrecruitment.domain.Study;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author jaime
@@ -13,4 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public interface EventRepository extends JpaRepository<Event, Long> {
+
+    @EntityGraph(value = "Event.withEnrollments", type = EntityGraph.EntityGraphType.LOAD)
+    List<Event> findByStudyOrderByStartDateTime(Study study);
 }
