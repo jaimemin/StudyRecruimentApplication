@@ -19,3 +19,5 @@ PostgreSQL 비밀번호 잊어버렸을 경우: https://jaimemin.tistory.com/208
 구글 SMTP 통해 메일 보내는 방법: https://jaimemin.tistory.com/2088
 
 @NamedEntityGraph: https://jaimemin.tistory.com/2090
+
+html form에서 put/delete 메서드 호출하는 방법: https://jaimemin.tistory.com/2098
