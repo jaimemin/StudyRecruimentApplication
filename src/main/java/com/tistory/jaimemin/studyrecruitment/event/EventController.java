@@ -8,6 +8,7 @@ import com.tistory.jaimemin.studyrecruitment.event.form.EventForm;
 import com.tistory.jaimemin.studyrecruitment.event.validator.EventValidator;
 import com.tistory.jaimemin.studyrecruitment.study.StudyService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import java.util.List;
  * </pre>
  * @since 2022-04-23
  */
+@Slf4j
 @Controller
 @RequestMapping("/study/{path}")
 @RequiredArgsConstructor
@@ -170,5 +172,25 @@ public class EventController {
         eventService.deleteEvent(eventRepository.findById(id).orElseThrow());
 
         return "redirect:/study/" + study.getEncodedPath() + "/events";
+    }
+
+    @PostMapping("/events/{id}/enroll")
+    public String newEnrollment(@CurrentAccount Account account
+            , @PathVariable String path
+            , @PathVariable Long id) {
+        Study study = studyService.getStudyToEnroll(path);
+        eventService.newEnrollment(eventRepository.findById(id).orElseThrow(), account);
+
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + id;
+    }
+
+    @PostMapping("/events/{id}/disenroll")
+    public String cancelEnrollment(@CurrentAccount Account account
+            , @PathVariable String path
+            , @PathVariable Long id) {
+        Study study = studyService.getStudyToEnroll(path);
+        eventService.cancelEnrollment(eventRepository.findById(id).orElseThrow(), account);
+
+        return "redirect:/study/" + study.getEncodedPath() + "/events/" + id;
     }
 }

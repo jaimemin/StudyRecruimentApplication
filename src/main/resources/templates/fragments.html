@@ -279,7 +279,7 @@
             <div class="form-group" th:if="${mode == 'new'}">
                 <label for="eventType">모집 방법</label>
                 <select th:field="*{eventType}"  class="custom-select mr-sm-2" id="eventType" aria-describedby="eventTypeHelp">
-                    <option th:value="FCFS">선착순</option>
+                    <option th:value="FIRST_COME_FIRST_SERVED">선착순</option>
                     <option th:value="CONFIRMATIVE">관리자 확인</option>
                 </select>
                 <small id="eventTypeHelp" class="form-text text-muted">

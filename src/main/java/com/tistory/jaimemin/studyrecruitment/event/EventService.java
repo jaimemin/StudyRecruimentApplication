@@ -1,6 +1,7 @@
 package com.tistory.jaimemin.studyrecruitment.event;
 
 import com.tistory.jaimemin.studyrecruitment.domain.Account;
+import com.tistory.jaimemin.studyrecruitment.domain.Enrollment;
 import com.tistory.jaimemin.studyrecruitment.domain.Event;
 import com.tistory.jaimemin.studyrecruitment.domain.Study;
 import com.tistory.jaimemin.studyrecruitment.event.form.EventForm;
@@ -23,6 +24,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class EventService {
 
+    private final EnrollmentRepository enrollmentRepository;
+
     private final EventRepository eventRepository;
 
     private final ModelMapper modelMapper;
@@ -37,11 +40,31 @@ public class EventService {
 
     public void updateEvent(Event event, EventForm eventForm) {
         modelMapper.map(eventForm, event);
-
-        // TODO: FIRST_COME_FIRST_SERVED에 대해서는 자동으로 추가 인원의 참가 신청을 확정 상태로 변경해야 함
+        event.acceptWaitingList();
     }
 
     public void deleteEvent(Event event) {
         eventRepository.delete(event);
+    }
+
+    public void newEnrollment(Event event, Account account) {
+        if (enrollmentRepository.existsByEventAndAccount(event, account)) {
+            return;
+        }
+
+        Enrollment enrollment = Enrollment.builder()
+                .enrolledAt(LocalDateTime.now())
+                .accepted(event.isAbleToAcceptWaitingEnrollment())
+                .account(account)
+                .build();
+        event.addEnrollment(enrollment);
+        enrollmentRepository.save(enrollment);
+    }
+
+    public void cancelEnrollment(Event event, Account account) {
+        Enrollment enrollment = enrollmentRepository.findByEventAndAccount(event, account);
+        event.removeEnrollment(enrollment);
+        enrollmentRepository.delete(enrollment);
+        event.acceptNextWaitingEnrollment();
     }
 }
