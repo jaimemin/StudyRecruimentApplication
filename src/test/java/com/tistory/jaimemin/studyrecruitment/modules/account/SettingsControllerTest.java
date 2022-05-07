@@ -1,23 +1,21 @@
 package com.tistory.jaimemin.studyrecruitment.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tistory.jaimemin.studyrecruitment.modules.tag.Tag;
-import com.tistory.jaimemin.studyrecruitment.modules.zone.Zone;
+import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.form.TagForm;
 import com.tistory.jaimemin.studyrecruitment.modules.account.form.ZoneForm;
+import com.tistory.jaimemin.studyrecruitment.modules.tag.Tag;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.TagRepository;
+import com.tistory.jaimemin.studyrecruitment.modules.zone.Zone;
 import com.tistory.jaimemin.studyrecruitment.modules.zone.ZoneRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -25,9 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class SettingsControllerTest {
 
     @Autowired

@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.modules.main;
 
+import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.AccountRepository;
 import com.tistory.jaimemin.studyrecruitment.modules.account.AccountService;
 import com.tistory.jaimemin.studyrecruitment.modules.account.form.SignUpForm;
@@ -8,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,8 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </pre>
  * @since 2022-03-26
  */
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 public class MainControllerTest {
 
     @Autowired

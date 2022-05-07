@@ -1,24 +1,21 @@
 package com.tistory.jaimemin.studyrecruitment.modules.study;
 
-import com.tistory.jaimemin.studyrecruitment.modules.account.WithAccount;
-import com.tistory.jaimemin.studyrecruitment.modules.account.AccountRepository;
+import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
-import lombok.RequiredArgsConstructor;
+import com.tistory.jaimemin.studyrecruitment.modules.account.AccountFactory;
+import com.tistory.jaimemin.studyrecruitment.modules.account.AccountRepository;
+import com.tistory.jaimemin.studyrecruitment.modules.account.WithAccount;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 /**
  * @author jaime
@@ -27,15 +24,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </pre>
  * @since 2022-04-11
  */
-@Transactional
-@SpringBootTest
-@AutoConfigureMockMvc
-@RequiredArgsConstructor
+@MockMvcTest
 public class StudyControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
-    
+
+    @Autowired
+    AccountFactory accountFactory;
+
+    @Autowired
+    StudyFactory studyFactory;
+
     @Autowired 
     protected StudyService studyService;
     
@@ -124,9 +124,9 @@ public class StudyControllerTest {
     @WithAccount("jaimemin")
     @DisplayName("스터디 가입")
     void joinStudy() throws Exception {
-        Account testAccount = createAccount("testAccount");
+        Account testAccount = accountFactory.createAccount("testAccount");
 
-        Study study = createStudy("test-study", testAccount);
+        Study study = studyFactory.createStudy("test-study", testAccount);
 
         mockMvc.perform(get("/study/" + study.getPath() + "/join"))
                 .andExpect(status().is3xxRedirection())
@@ -141,8 +141,8 @@ public class StudyControllerTest {
     @WithAccount("jaimemin")
     @DisplayName("스터디 탈퇴")
     void leaveStudy() throws Exception {
-        Account testAccount = createAccount("testAccount");
-        Study study = createStudy("test-study", testAccount);
+        Account testAccount = accountFactory.createAccount("testAccount");
+        Study study = studyFactory.createStudy("test-study", testAccount);
 
         Account jaimemin = accountRepository.findByNickname("jaimemin");
         studyService.addMember(study, jaimemin);
@@ -152,23 +152,6 @@ public class StudyControllerTest {
                 .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
 
         assertFalse(study.getMembers().contains(jaimemin));
-    }
-
-    protected Study createStudy(String path, Account manager) {
-        Study study = new Study();
-        study.setPath(path);
-        studyService.createNewStudy(study, manager);
-
-        return study;
-    }
-
-    protected Account createAccount(String nickname) {
-        Account jaimemin = new Account();
-        jaimemin.setNickname(nickname);
-        jaimemin.setEmail(nickname + "@email.com");
-        accountRepository.save(jaimemin);
-
-        return jaimemin;
     }
     
 }

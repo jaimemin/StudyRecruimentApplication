@@ -1,12 +1,16 @@
 package com.tistory.jaimemin.studyrecruitment.modules.event;
 
-import com.tistory.jaimemin.studyrecruitment.modules.account.WithAccount;
+import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
+import com.tistory.jaimemin.studyrecruitment.modules.account.AccountFactory;
+import com.tistory.jaimemin.studyrecruitment.modules.account.AccountRepository;
+import com.tistory.jaimemin.studyrecruitment.modules.account.WithAccount;
 import com.tistory.jaimemin.studyrecruitment.modules.study.Study;
-import com.tistory.jaimemin.studyrecruitment.modules.study.StudyControllerTest;
+import com.tistory.jaimemin.studyrecruitment.modules.study.StudyFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,12 +21,25 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class EventControllerTest extends StudyControllerTest {
+@MockMvcTest
+class EventControllerTest {
 
     private static final int ENROLLMENT_LIMIT = 2;
 
     @Autowired
+    MockMvc mockMvc;
+
+    @Autowired
+    AccountFactory accountFactory;
+
+    @Autowired
+    StudyFactory studyFactory;
+
+    @Autowired
     EventService eventService;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Autowired
     EnrollmentRepository enrollmentRepository;
@@ -31,8 +48,8 @@ class EventControllerTest extends StudyControllerTest {
     @DisplayName("선착순 모임에 참가 신청 - 자동 수락")
     @WithAccount("jaimemin")
     void newEnrollmentToFirstComeFirstServedEventAccepted() throws Exception {
-        Account testUser = createAccount("testUser");
-        Study study = createStudy("test-study", testUser);
+        Account testUser = accountFactory.createAccount("testUser");
+        Study study = studyFactory.createStudy("test-study", testUser);
         Event event = creatEvent("test-event"
                 , EventType.FIRST_COME_FIRST_SERVED
                 , ENROLLMENT_LIMIT
@@ -52,16 +69,16 @@ class EventControllerTest extends StudyControllerTest {
     @DisplayName("선착순 모임에 참가 신청 - 대기중 (이미 인원이 꽉차서)")
     @WithAccount("jaimemin")
     void newEnrollmentToFirstComeFirstServedEventNotAccepted() throws Exception {
-        Account testUser = createAccount("testUser");
-        Study study = createStudy("test-study", testUser);
+        Account testUser = accountFactory.createAccount("testUser");
+        Study study = studyFactory.createStudy("test-study", testUser);
         Event event = creatEvent("test-event"
                 , EventType.FIRST_COME_FIRST_SERVED
                 , ENROLLMENT_LIMIT
                 , study
                 , testUser);
 
-        Account may = createAccount("may");
-        Account june = createAccount("june");
+        Account may = accountFactory.createAccount("may");
+        Account june = accountFactory.createAccount("june");
         eventService.newEnrollment(event, may);
         eventService.newEnrollment(event, june);
 
@@ -79,9 +96,9 @@ class EventControllerTest extends StudyControllerTest {
     @WithAccount("jaimemin")
     void acceptedAccountCancelEnrollmentToFirstComeFirstServedEventNotAccepted() throws Exception {
         Account jaimemin = accountRepository.findByNickname("jaimemin");
-        Account testUser = createAccount("testUser");
-        Account may = createAccount("may");
-        Study study = createStudy("test-study", testUser);
+        Account testUser = accountFactory.createAccount("testUser");
+        Account may = accountFactory.createAccount("may");
+        Study study = studyFactory.createStudy("test-study", testUser);
         Event event = creatEvent("test-event"
                 , EventType.FIRST_COME_FIRST_SERVED
                 , ENROLLMENT_LIMIT
@@ -112,9 +129,9 @@ class EventControllerTest extends StudyControllerTest {
     @WithAccount("jaimemin")
     void notAcceptedAccountCancelEnrollmentToFirstComeFirstServedEventNotAccepted() throws Exception {
         Account jaimemin = accountRepository.findByNickname("jaimemin");
-        Account testUser = createAccount("testUser");
-        Account may = createAccount("may");
-        Study study = createStudy("test-study", testUser);
+        Account testUser = accountFactory.createAccount("testUser");
+        Account may = accountFactory.createAccount("may");
+        Study study = studyFactory.createStudy("test-study", testUser);
         Event event = creatEvent("test-event"
                 , EventType.FIRST_COME_FIRST_SERVED
                 , ENROLLMENT_LIMIT
@@ -144,8 +161,8 @@ class EventControllerTest extends StudyControllerTest {
     @DisplayName("관리자 확인 모임에 참가 신청 - 대기중")
     @WithAccount("jaimemin")
     void newEnrollmentToConfirmativeEventNotAccepted() throws Exception {
-        Account testUser = createAccount("testUser");
-        Study study = createStudy("test-study", testUser);
+        Account testUser = accountFactory.createAccount("testUser");
+        Study study = studyFactory.createStudy("test-study", testUser);
         Event event = creatEvent("test-event"
                 , EventType.CONFIRMATIVE
                 , ENROLLMENT_LIMIT
