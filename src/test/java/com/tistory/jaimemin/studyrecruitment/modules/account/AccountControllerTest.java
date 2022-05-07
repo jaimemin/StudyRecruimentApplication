@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.modules.account;
 
+import com.tistory.jaimemin.studyrecruitment.infra.AbstractContainerBaseTest;
 import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.infra.mail.EmailMessage;
 import com.tistory.jaimemin.studyrecruitment.infra.mail.EmailService;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class AccountControllerTest {
+class AccountControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     private MockMvc mockMvc;

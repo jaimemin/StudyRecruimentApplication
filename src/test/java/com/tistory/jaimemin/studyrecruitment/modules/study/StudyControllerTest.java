@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.modules.study;
 
+import com.tistory.jaimemin.studyrecruitment.infra.AbstractContainerBaseTest;
 import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import com.tistory.jaimemin.studyrecruitment.modules.account.AccountFactory;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since 2022-04-11
  */
 @MockMvcTest
-public class StudyControllerTest {
+public class StudyControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     protected MockMvc mockMvc;

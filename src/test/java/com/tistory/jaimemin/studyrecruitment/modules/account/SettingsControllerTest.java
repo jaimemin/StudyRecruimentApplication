@@ -1,6 +1,7 @@
 package com.tistory.jaimemin.studyrecruitment.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tistory.jaimemin.studyrecruitment.infra.AbstractContainerBaseTest;
 import com.tistory.jaimemin.studyrecruitment.infra.MockMvcTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.form.TagForm;
 import com.tistory.jaimemin.studyrecruitment.modules.account.form.ZoneForm;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class SettingsControllerTest {
+class SettingsControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     MockMvc mockMvc;

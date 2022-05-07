@@ -1,5 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.modules.study;
 
+import com.tistory.jaimemin.studyrecruitment.infra.AbstractContainerBaseTest;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import com.tistory.jaimemin.studyrecruitment.modules.account.UserAccount;
 import com.tistory.jaimemin.studyrecruitment.modules.study.Study;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * </pre>
  * @since 2022-04-13
  */
-public class StudyTest {
+public class StudyTest extends AbstractContainerBaseTest {
 
     Study study;
 
