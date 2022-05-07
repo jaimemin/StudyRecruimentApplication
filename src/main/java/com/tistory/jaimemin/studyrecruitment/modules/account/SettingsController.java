@@ -1,15 +1,15 @@
-package com.tistory.jaimemin.studyrecruitment.modules.settings;
+package com.tistory.jaimemin.studyrecruitment.modules.account;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tistory.jaimemin.studyrecruitment.modules.account.AccountService;
 import com.tistory.jaimemin.studyrecruitment.modules.account.CurrentAccount;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
+import com.tistory.jaimemin.studyrecruitment.modules.account.form.*;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.Tag;
 import com.tistory.jaimemin.studyrecruitment.modules.zone.Zone;
-import com.tistory.jaimemin.studyrecruitment.modules.settings.form.*;
-import com.tistory.jaimemin.studyrecruitment.modules.settings.validator.NicknameValidator;
-import com.tistory.jaimemin.studyrecruitment.modules.settings.validator.PasswordFormValidator;
+import com.tistory.jaimemin.studyrecruitment.modules.account.validator.NicknameValidator;
+import com.tistory.jaimemin.studyrecruitment.modules.account.validator.PasswordFormValidator;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.TagRepository;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.TagService;
 import com.tistory.jaimemin.studyrecruitment.modules.zone.ZoneRepository;

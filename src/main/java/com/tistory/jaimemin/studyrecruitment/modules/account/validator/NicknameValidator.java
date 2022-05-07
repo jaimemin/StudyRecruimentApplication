@@ -1,8 +1,8 @@
-package com.tistory.jaimemin.studyrecruitment.modules.settings.validator;
+package com.tistory.jaimemin.studyrecruitment.modules.account.validator;
 
 import com.tistory.jaimemin.studyrecruitment.modules.account.AccountRepository;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
-import com.tistory.jaimemin.studyrecruitment.modules.settings.form.NicknameForm;
+import com.tistory.jaimemin.studyrecruitment.modules.account.form.NicknameForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

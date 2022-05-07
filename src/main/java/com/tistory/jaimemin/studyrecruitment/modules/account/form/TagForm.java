@@ -1,4 +1,4 @@
-package com.tistory.jaimemin.studyrecruitment.modules.settings.form;
+package com.tistory.jaimemin.studyrecruitment.modules.account.form;
 
 import lombok.Data;
 

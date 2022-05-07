@@ -1,4 +1,4 @@
-package com.tistory.jaimemin.studyrecruitment.domain;
+package com.tistory.jaimemin.studyrecruitment.modules.study;
 
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import com.tistory.jaimemin.studyrecruitment.modules.account.UserAccount;

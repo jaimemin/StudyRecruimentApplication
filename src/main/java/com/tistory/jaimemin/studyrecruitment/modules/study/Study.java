@@ -177,4 +177,8 @@ public class Study {
     public void removeMember(Account account) {
         this.members.remove(account);
     }
+
+    public boolean isManagedBy(Account account) {
+        return this.getManagers().contains(account);
+    }
 }

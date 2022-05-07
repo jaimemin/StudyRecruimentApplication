@@ -1,6 +1,5 @@
-package com.tistory.jaimemin.studyrecruitment;
+package com.tistory.jaimemin.studyrecruitment.modules.account;
 
-import com.tistory.jaimemin.studyrecruitment.modules.account.AccountService;
 import com.tistory.jaimemin.studyrecruitment.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,14 +1,10 @@
-package com.tistory.jaimemin.studyrecruitment.modules.settings;
+package com.tistory.jaimemin.studyrecruitment.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tistory.jaimemin.studyrecruitment.WithAccount;
-import com.tistory.jaimemin.studyrecruitment.modules.account.AccountRepository;
-import com.tistory.jaimemin.studyrecruitment.modules.account.AccountService;
-import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.Tag;
 import com.tistory.jaimemin.studyrecruitment.modules.zone.Zone;
-import com.tistory.jaimemin.studyrecruitment.modules.settings.form.TagForm;
-import com.tistory.jaimemin.studyrecruitment.modules.settings.form.ZoneForm;
+import com.tistory.jaimemin.studyrecruitment.modules.account.form.TagForm;
+import com.tistory.jaimemin.studyrecruitment.modules.account.form.ZoneForm;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.TagRepository;
 import com.tistory.jaimemin.studyrecruitment.modules.zone.ZoneRepository;
 import org.junit.jupiter.api.AfterEach;

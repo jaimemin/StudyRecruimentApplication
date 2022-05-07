@@ -1,6 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.modules.event;
 
-import com.tistory.jaimemin.studyrecruitment.WithAccount;
+import com.tistory.jaimemin.studyrecruitment.modules.account.WithAccount;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import com.tistory.jaimemin.studyrecruitment.modules.study.Study;
 import com.tistory.jaimemin.studyrecruitment.modules.study.StudyControllerTest;

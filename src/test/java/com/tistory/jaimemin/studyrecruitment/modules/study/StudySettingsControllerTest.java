@@ -1,6 +1,6 @@
 package com.tistory.jaimemin.studyrecruitment.modules.study;
 
-import com.tistory.jaimemin.studyrecruitment.WithAccount;
+import com.tistory.jaimemin.studyrecruitment.modules.account.WithAccount;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;

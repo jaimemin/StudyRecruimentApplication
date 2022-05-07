@@ -1,4 +1,4 @@
-package com.tistory.jaimemin.studyrecruitment;
+package com.tistory.jaimemin.studyrecruitment.modules.account;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 
