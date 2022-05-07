@@ -1,6 +1,8 @@
 package com.tistory.jaimemin.studyrecruitment.domain;
 
-import com.tistory.jaimemin.studyrecruitment.account.UserAccount;
+import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
+import com.tistory.jaimemin.studyrecruitment.modules.account.UserAccount;
+import com.tistory.jaimemin.studyrecruitment.modules.study.Study;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
