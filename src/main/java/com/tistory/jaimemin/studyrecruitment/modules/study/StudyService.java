@@ -1,11 +1,13 @@
 package com.tistory.jaimemin.studyrecruitment.modules.study;
 
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
+import com.tistory.jaimemin.studyrecruitment.modules.study.event.StudyCreatedEvent;
 import com.tistory.jaimemin.studyrecruitment.modules.tag.Tag;
 import com.tistory.jaimemin.studyrecruitment.modules.zone.Zone;
 import com.tistory.jaimemin.studyrecruitment.modules.study.form.StudyDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +32,12 @@ public class StudyService {
 
     private final ModelMapper modelMapper;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = studyRepository.save(study);
         newStudy.addManager(account);
+        eventPublisher.publishEvent(new StudyCreatedEvent(newStudy));
 
         return newStudy;
     }
