@@ -65,7 +65,10 @@ public class EnrollmentEventListener {
         }
     }
 
-    private void sendEmail(EnrollmentEvent enrollmentEvent, Account account, Event event, Study study) {
+    private void sendEmail(EnrollmentEvent enrollmentEvent
+            , Account account
+            , Event event
+            , Study study) {
         Context context = new Context();
         context.setVariable("nickname", account.getNickname());
         context.setVariable("link", "/study/" + study.getEncodedPath() + "/events/" + event.getId());
@@ -83,7 +86,10 @@ public class EnrollmentEventListener {
         emailService.send(emailMessage);
     }
 
-    private void createNotification(EnrollmentEvent enrollmentEvent, Account account, Event event, Study study) {
+    private void createNotification(EnrollmentEvent enrollmentEvent
+            , Account account
+            , Event event
+            , Study study) {
         Notification notification = new Notification();
         notification.setTitle(study.getTitle() + " / " + event.getTitle());
         notification.setLink("/study/" + study.getEncodedPath() + "/events/" + event.getId());
@@ -92,6 +98,7 @@ public class EnrollmentEventListener {
         notification.setMessage(enrollmentEvent.getMessage());
         notification.setAccount(account);
         notification.setNotificationType(NotificationType.EVENT_ENROLLMENT);
+
         notificationRepository.save(notification);
     }
 }
