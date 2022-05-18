@@ -6,15 +6,16 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * @author jaime
- * @title StudyCreatedEvent
+ * @title StudyUpdateEvent
  * @see\n <pre>
  * </pre>
- * @since 2022-05-14
+ * @since 2022-05-18
  */
 @Getter
 @RequiredArgsConstructor
-public class StudyCreatedEvent {
+public class StudyUpdateEvent {
 
     private final Study study;
 
+    private final String message;
 }
