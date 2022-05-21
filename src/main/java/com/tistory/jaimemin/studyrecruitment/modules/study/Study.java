@@ -98,6 +98,8 @@ public class Study {
 
     private boolean useBanner;
 
+    private int memberCount;
+
     public void addManager(Account account) {
         this.managers.add(account);
     }
@@ -125,6 +127,7 @@ public class Study {
 
     public void addMember(Account account) {
         this.members.add(account);
+        this.memberCount++;
     }
 
     public void publish() {
@@ -180,6 +183,7 @@ public class Study {
 
     public void removeMember(Account account) {
         this.members.remove(account);
+        this.memberCount--;
     }
 
     public boolean isManagedBy(Account account) {
