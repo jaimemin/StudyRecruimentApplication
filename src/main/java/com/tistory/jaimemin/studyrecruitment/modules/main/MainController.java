@@ -36,6 +36,9 @@ public class MainController {
             model.addAttribute("account", account);
         }
 
+        model.addAttribute("studyList"
+                , studyRepository.findFirst9ByPublishedAndClosedOrderByPublishedDateTimeDesc(true, false));
+
         return "index";
     }
 
