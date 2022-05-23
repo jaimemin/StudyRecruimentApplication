@@ -1,9 +1,12 @@
 package com.tistory.jaimemin.studyrecruitment.modules.event;
 
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author jaime
@@ -19,4 +22,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     boolean existsByEventAndAccount(Event event, Account account);
 
     Enrollment findByEventAndAccount(Event event, Account account);
+
+    @EntityGraph("Enrollment.withEventAndStudy")
+    List<Enrollment> findByAccountAndAcceptedOrderByEnrolledAtDesc(Account account, boolean accepted);
 }

@@ -3,10 +3,7 @@ package com.tistory.jaimemin.studyrecruitment.modules.event;
 import com.tistory.jaimemin.studyrecruitment.modules.account.Account;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -16,6 +13,13 @@ import java.time.LocalDateTime;
  * </pre>
  * @since 2022-04-20
  */
+@NamedEntityGraph(
+        name = "Enrollment.withEventAndStudy",
+        attributeNodes = {
+                @NamedAttributeNode(value = "event", subgraph = "study")
+        },
+        subgraphs = @NamedSubgraph(name = "study", attributeNodes = @NamedAttributeNode("study"))
+)
 @Entity
 @Getter
 @Setter
