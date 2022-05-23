@@ -27,6 +27,8 @@ public class PackageDependencyTest {
 
     private static final String ZONE = "..modules.zone..";
 
+    private static final String MAIN = "..modules.main..";
+
     private static final String MODULES_PACKAGE = "com.tistory.jaimemin.studyrecruitment.modules..";
 
     @ArchTest
@@ -41,10 +43,10 @@ public class PackageDependencyTest {
             .should()
             .onlyBeAccessed()
             .byClassesThat()
-            .resideInAnyPackage(STUDY, EVENT);
+            .resideInAnyPackage(STUDY, MAIN, EVENT);
 
     @ArchTest
-    ArchRule eventpackageRule = classes().that().resideInAnyPackage(EVENT)
+    ArchRule eventPackageRule = classes().that().resideInAnyPackage(EVENT)
             .should()
             .accessClassesThat()
             .resideInAnyPackage(STUDY, ACCOUNT, EVENT);
